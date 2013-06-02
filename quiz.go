@@ -35,7 +35,7 @@ func (a assertion) eval(expect *expectation) {
 	if a.failure {
 		_, file, line, _ := runtime.Caller(2)
 		expect.t.Fail()
-		fmt.Printf(a.failureMessage+"\n  %s:%d\n", append(a.messageParts, file, line))
+		fmt.Printf(a.failureMessage+"\n  %s:%d\n", append(a.messageParts, file, line)...)
 	}
 }
 
