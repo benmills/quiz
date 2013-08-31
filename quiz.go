@@ -11,6 +11,10 @@ func Test(t *testing.T) *defaultHarness {
 	return &defaultHarness{t}
 }
 
+func NewExpecation(t TestHarness, target interface{}) *Expectation {
+	return &Expectation{t: t, target: target}
+}
+
 type TestHarness interface {
 	Fail()
 	Log(string)
