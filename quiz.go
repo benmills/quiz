@@ -60,7 +60,7 @@ func (a assertion) eval(expect *Expectation) {
 func (expect *Expectation) ToEqual(value interface{}) {
 	assertion{
 		failure:        expect.target != value,
-		failureMessage: "Expected %s to equal %s.",
+		failureMessage: "Expected %v to equal %v.",
 		messageParts:   []interface{}{value, expect.target},
 	}.eval(expect)
 }
@@ -68,7 +68,7 @@ func (expect *Expectation) ToEqual(value interface{}) {
 func (expect *Expectation) ToBeTrue() {
 	assertion{
 		failure:        expect.target != true,
-		failureMessage: "Expected %s to be true.",
+		failureMessage: "Expected %v to be true.",
 		messageParts:   []interface{}{expect.target},
 	}.eval(expect)
 }
@@ -76,7 +76,7 @@ func (expect *Expectation) ToBeTrue() {
 func (expect *Expectation) ToBeFalse() {
 	assertion{
 		failure:        expect.target != false,
-		failureMessage: "Expected %s to be false.",
+		failureMessage: "Expected %v to be false.",
 		messageParts:   []interface{}{expect.target},
 	}.eval(expect)
 }
@@ -85,7 +85,7 @@ func (expect *Expectation) ToBeLessThan(value int) {
 	intTarget := expect.target.(int)
 	assertion{
 		failure:        intTarget > value,
-		failureMessage: "Expected %s to be less tahn %s.",
+		failureMessage: "Expected %v to be less than %v.",
 		messageParts:   []interface{}{expect.target, value},
 	}.eval(expect)
 }
@@ -94,7 +94,7 @@ func (expect *Expectation) ToBeGreaterThan(value int) {
 	intTarget := expect.target.(int)
 	assertion{
 		failure:        intTarget < value,
-		failureMessage: "Expected %s to be greater than %s.",
+		failureMessage: "Expected %v to be greater than %v.",
 		messageParts:   []interface{}{expect.target, value},
 	}.eval(expect)
 }
