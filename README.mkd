@@ -5,7 +5,7 @@ A very simple go testing library.
 func TestSimple(t *testing.T) {
   test := quiz.Test(t)
 
-  test.Expect(1 == 2).toBeFalse()
+  test.Expect(1 == 2).ToBeFalse()
 }
 
 func TestSimple(t *testing.T) {
