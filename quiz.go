@@ -11,7 +11,7 @@ func Test(t *testing.T) *defaultHarness {
 	return &defaultHarness{t}
 }
 
-func NewExpecation(t TestHarness, target interface{}) *Expectation {
+func NewExpectation(t TestHarness, target interface{}) *Expectation {
 	return &Expectation{t: t, target: target}
 }
 
