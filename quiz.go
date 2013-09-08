@@ -26,7 +26,7 @@ type defaultHarness struct {
 }
 
 func (harness defaultHarness) FailNow() {
-	harness.t.FailNow ()
+	harness.t.FailNow()
 }
 
 func (harness defaultHarness) Log(line string) {
@@ -52,8 +52,8 @@ type assertion struct {
 func (a assertion) eval(expect *Expectation) {
 	if a.failure {
 		_, file, line, _ := runtime.Caller(2)
-		expect.t.FailNow()
 		expect.t.Log(fmt.Sprintf(a.failureMessage+"\n  %s:%d\n", append(a.messageParts, file, line)...))
+		expect.t.FailNow()
 	}
 }
 
