@@ -16,7 +16,7 @@ func NewExpectation(t TestHarness, target interface{}) *Expectation {
 }
 
 type TestHarness interface {
-	Fail()
+	FailNow()
 	Log(string)
 	Expect(interface{}) *Expectation
 }
@@ -25,8 +25,8 @@ type defaultHarness struct {
 	t *testing.T
 }
 
-func (harness defaultHarness) Fail() {
-	harness.t.Fail()
+func (harness defaultHarness) FailNow() {
+	harness.t.FailNow ()
 }
 
 func (harness defaultHarness) Log(line string) {
@@ -52,7 +52,7 @@ type assertion struct {
 func (a assertion) eval(expect *Expectation) {
 	if a.failure {
 		_, file, line, _ := runtime.Caller(2)
-		expect.t.Fail()
+		expect.t.FailNow()
 		expect.t.Log(fmt.Sprintf(a.failureMessage+"\n  %s:%d\n", append(a.messageParts, file, line)...))
 	}
 }
