@@ -18,8 +18,12 @@ func (t *testHelperHarness) Fail() {
 	t.Failed = true
 }
 
+func (t *testHelperHarness) FailNow() {
+	t.Failed = true
+}
+
 func (t *testHelperHarness) Log(line string) {
-	t.Message = line
+	t.Message += line
 }
 
 func (t *testHelperHarness) Expect(target interface{}) *Expectation {
@@ -132,6 +136,16 @@ func TestToContainFail(t *testing.T) {
 	h.Expect("Hello world").ToContain("Goodbye")
 
 	if !strings.Contains(h.Message, "Expected Hello world to contain Goodbye") {
+		t.Fail()
+	}
+}
+
+func TestArrayToContain(t *testing.T) {
+	h := newHarness()
+
+	h.Expect([]string{"a"}).ToContain("a")
+
+	if h.Failed {
 		t.Fail()
 	}
 }

@@ -99,10 +99,12 @@ func (expect *Expectation) ToBeGreaterThan(value int) {
 	}.eval(expect)
 }
 
-func (expect *Expectation) ToContain(value string) {
-	stringTarget := expect.target.(string)
+func (expect *Expectation) ToContain(value interface{}) {
+	stringTarget := fmt.Sprint(expect.target)
+	stringValue := fmt.Sprint(value)
+
 	assertion{
-		failure:        !strings.Contains(stringTarget, value),
+		failure:        !strings.Contains(stringTarget, stringValue),
 		failureMessage: "Expected %s to contain %s.",
 		messageParts:   []interface{}{expect.target, value},
 	}.eval(expect)
