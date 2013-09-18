@@ -5,33 +5,44 @@ import (
 	"testing"
 )
 
-func newHarness() *testHelperHarness {
-	return &testHelperHarness{false, ""}
+func TestTo(t *testing.T) {
+	e := NewExpectation(&spyTestHarness{}, "foo")
+	e.To.Equal("foo")
+
+	if e.To.failure == true {
+		t.Log("Expected foo == foo")
+		t.Fail()
+	}
+
+	e.To.Equal("bar")
+
+	if e.To.failure == false {
+		t.Log("Expected failure since foo != bar")
+		t.Fail()
+	}
 }
 
-type testHelperHarness struct {
-	Failed  bool
-	Message string
+func TestToNot(t *testing.T) {
+	e := NewExpectation(&spyTestHarness{}, "foo")
+	e.ToNot.Equal("bar")
+
+	if e.ToNot.failure == true {
+		t.Log("Expected foo != bar")
+		t.Fail()
+	}
+
+	e.ToNot.Equal("foo")
+
+	if e.ToNot.failure == false {
+		t.Log("Expected failure since foo == foo")
+		t.Fail()
+	}
 }
 
-func (t *testHelperHarness) Fail() {
-	t.Failed = true
-}
-
-func (t *testHelperHarness) FailNow() {
-	t.Failed = true
-}
-
-func (t *testHelperHarness) Log(line string) {
-	t.Message += line
-}
-
-func (t *testHelperHarness) Expect(target interface{}) *Expectation {
-	return &Expectation{t: t, target: target}
-}
+// Deprecated
 
 func TestToEqual(t *testing.T) {
-	h := newHarness()
+	h := newSpyTestHarness()
 
 	h.Expect(2).ToEqual(2)
 
@@ -41,17 +52,18 @@ func TestToEqual(t *testing.T) {
 }
 
 func TestToEqualFail(t *testing.T) {
-	h := newHarness()
+	h := newSpyTestHarness()
 
 	h.Expect(1).ToEqual(2)
 
-	if !strings.Contains(h.Message, "Expected 2 to equal 1.") {
+	if !strings.Contains(h.Message, "Expected 1 to equal 2.") {
+		t.Log("'"+h.Message+"' does not contain", "'Expect 1 to equal 2.'")
 		t.Fail()
 	}
 }
 
 func TestToBeFalse(t *testing.T) {
-	h := newHarness()
+	h := newSpyTestHarness()
 
 	h.Expect(1 == 2).ToBeFalse()
 
@@ -61,7 +73,7 @@ func TestToBeFalse(t *testing.T) {
 }
 
 func TestToBeFalseFail(t *testing.T) {
-	h := newHarness()
+	h := newSpyTestHarness()
 
 	h.Expect(2 == 2).ToBeFalse()
 
@@ -71,7 +83,7 @@ func TestToBeFalseFail(t *testing.T) {
 }
 
 func TestToBeTrue(t *testing.T) {
-	h := newHarness()
+	h := newSpyTestHarness()
 
 	h.Expect(1 == 1).ToBeTrue()
 
@@ -81,7 +93,7 @@ func TestToBeTrue(t *testing.T) {
 }
 
 func TestToBeTrueFail(t *testing.T) {
-	h := newHarness()
+	h := newSpyTestHarness()
 
 	h.Expect(2 == 3).ToBeTrue()
 
@@ -91,7 +103,7 @@ func TestToBeTrueFail(t *testing.T) {
 }
 
 func TestToBeGreaterThan(t *testing.T) {
-	h := newHarness()
+	h := newSpyTestHarness()
 
 	h.Expect(1).ToBeGreaterThan(0)
 
@@ -101,7 +113,7 @@ func TestToBeGreaterThan(t *testing.T) {
 }
 
 func TestToBeGreaterThanFail(t *testing.T) {
-	h := newHarness()
+	h := newSpyTestHarness()
 
 	h.Expect(0).ToBeGreaterThan(1)
 
@@ -111,7 +123,7 @@ func TestToBeGreaterThanFail(t *testing.T) {
 }
 
 func TestToBeLessThan(t *testing.T) {
-	h := newHarness()
+	h := newSpyTestHarness()
 
 	h.Expect(1).ToBeLessThan(2)
 
@@ -121,7 +133,7 @@ func TestToBeLessThan(t *testing.T) {
 }
 
 func TestToContain(t *testing.T) {
-	h := newHarness()
+	h := newSpyTestHarness()
 
 	h.Expect("Hello world").ToContain("world")
 
@@ -131,21 +143,11 @@ func TestToContain(t *testing.T) {
 }
 
 func TestToContainFail(t *testing.T) {
-	h := newHarness()
+	h := newSpyTestHarness()
 
 	h.Expect("Hello world").ToContain("Goodbye")
 
 	if !strings.Contains(h.Message, "Expected Hello world to contain Goodbye") {
-		t.Fail()
-	}
-}
-
-func TestArrayToContain(t *testing.T) {
-	h := newHarness()
-
-	h.Expect([]string{"a"}).ToContain("a")
-
-	if h.Failed {
 		t.Fail()
 	}
 }
