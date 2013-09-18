@@ -18,5 +18,5 @@ func (harness defaultHarness) Log(line string) {
 }
 
 func (harness defaultHarness) Expect(target interface{}) *Expectation {
-	return &Expectation{t: harness, target: target}
+	return NewExpectation(harness, target)
 }
