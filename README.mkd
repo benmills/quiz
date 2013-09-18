@@ -1,4 +1,4 @@
-# Quiz
+# Quiz [![Build Status](https://travis-ci.org/benmills/quiz.png?branch=master)](https://travis-ci.org/benmills/quiz)
 
 A very simple go testing library.
 
