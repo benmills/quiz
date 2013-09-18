@@ -1,4 +1,4 @@
-# quiz
+# Quiz
 
 A very simple go testing library.
 
