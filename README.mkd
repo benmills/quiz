@@ -37,7 +37,9 @@ Or we could expect `foo` to not be true:
 test.Expect(foo).ToNot.BeTrue()
 ```
 
-Besides `To` and `ToNot` there are a number of matchers provided by quiz:
+`To` and `ToNot` can be used with a number of matchers provided by quiz which will be covered next.
+
+## Matchers
 
 * `Equal(interface{})`
 * `BeTrue()`
