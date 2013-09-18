@@ -1,21 +1,56 @@
 # quiz
+
 A very simple go testing library.
 
 ```go
 func TestSimple(t *testing.T) {
   test := quiz.Test(t)
 
-  test.Expect(1 == 2).ToBeFalse()
+  test.Expect(1 == 2).To.BeFalse()
+  test.Expect("my tests").ToNot.Contain("verbosity")
 }
+```
 
-func TestSimple(t *testing.T) {
+## Usage
+
+To install quiz all you need to do is `go get github.com/benmills/quiz`. Once you have it installed make sure to import it in the test files you plan on using quiz in.
+
+To use quiz in a test case you need to wrap the `*testing.T` argument that is normally provided for test cases in a `quiz.Test`. This enhances the normal `testing.T` instance with more functionality.
+
+```go
+func TestFoo(t *testing.T) {
   test := quiz.Test(t)
-
-  test.Expect(1).ToEqual(1)
-  test.Expect(1 == 2).ToBeFalse()
-  test.Expect(1 == 1).ToBeTrue()
-  test.Expect(1).ToBeGreaterThan(0)
-  test.Expect(1).ToBeLessThan(2)
-  test.Expect("hello world").ToContain("world")
 }
+```
+
+Once we have `quiz.Test` we can make different kinds of assertions. Before we make an assertion we can decide if it will succeed or fail by using `To` or `ToNot`.
+
+For example if we expect `foo` to be true we could write:
+
+```go
+test.Expect(foo).To.BeTrue()
+```
+
+Or we could expect `foo` to not be true:
+
+```go
+test.Expect(foo).ToNot.BeTrue()
+```
+
+Besides `To` and `ToNot` there are a number of matchers provided by quiz:
+
+* `Equal(interface{})`
+* `BeTrue()`
+* `BeFalse()`
+* `BeGreaterThan(int)`
+* `BeLessThan(int)`
+* `Contain(interface{})`
+
+#### Contain
+
+Contain should be able to check if any type holds a value, such as slices, maps, or other stucts. The way it does this is by forcing both given values into strings using `fmt.Sprint`. As long as the given values print contained values correctly when passed into `fmt.Sprint` we can assert on them using `Contain`. Here are a few examples:
+
+```go
+test.Expect([]string{"foo", "bar"}).To.Contain("foo")
+test.Expect(map[string]string{"age":"25"}).To.Contain("age")
 ```
